@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRX-GBP Trading Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1729 100%);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #4169E1, #1E90FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .last-update {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 12px;
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .premium-box {
+            background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(65, 105, 225, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .premium-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .premium-box h2 {
+            font-size: 22px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .premium-box p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .premium-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .premium-feature {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .paypal-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .price-tag {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .paypal-button {
+            background: #0070ba;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .paypal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 112, 186, 0.5);
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1729 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #4169E1;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .stat-value.positive { color: #00ff88; }
+        .stat-value.negative { color: #ff4444; }
+
+        .session-badge {
+            display: inline-block;
+            background: rgba(65, 105, 225, 0.15);
+            border: 1px solid #4169E1;
+            color: #4169E1;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trade-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid;
+        }
+
+        .trade-item.buy { border-left-color: #00ff88; }
+        .trade-item.sell { border-left-color: #ff4444; }
+
+        .trade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .trade-type {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .trade-type.buy { color: #00ff88; }
+        .trade-type.sell { color: #ff4444; }
+
+        .trade-profit {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .trade-details {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .no-trades {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #4169E1;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            color: #ff4444;
+        }
+
+        @media (max-width: 600px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .premium-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .paypal-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .paypal-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💷 FRX-GBP Dashboard</h1>
+            <div class="subtitle">Real-Time ICT Silver Bullet Strategy - GBPUSD</div>
+            <div class="last-update">
+                <span class="live-indicator"></span>
+                <span id="lastUpdate">Caricamento...</span>
+            </div>
+        </div>
+
+        <div class="premium-box">
+            <div class="premium-content">
+                <h2>⭐ Accedi ai Segnali Premium GBPUSD</h2>
+                <p>Ricevi segnali di trading in tempo reale su GBPUSD basati sulla strategia ICT Silver Bullet con notifiche istantanee su Telegram!</p>
+                
+                <div class="premium-features">
+                    <div class="premium-feature">✅ Segnali GBPUSD real-time</div>
+                    <div class="premium-feature">📊 Analisi ICT dettagliate</div>
+                    <div class="premium-feature">🎯 Entry, SL e TP precisi</div>
+                    <div class="premium-feature">📱 Notifiche Telegram</div>
+                </div>
+
+                <div class="paypal-section">
+                    <span class="price-tag">€29.90/mese</span>
+                    <button class="paypal-button" onclick="openPayPal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.028.15a.804.804 0 01-.793.679H8.025c-.356 0-.623-.307-.552-.657l2.133-13.517a.963.963 0 01.95-.813h2.877c1.903 0 3.2.398 3.984 1.218.413.431.706.94.893 1.509.096.291.16.6.191.922.03.318.028.649-.006.995z"/>
+                        </svg>
+                        Sottoscrivi con PayPal
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="loading">
+            <div class="spinner"></div>
+            <div style="color: rgba(255,255,255,0.6);">Caricamento dati...</div>
+        </div>
+    </div>
+
+    <script>
+        var GITHUB_USER = 'Luidib29';
+        var REPO = 'gbpusd-trading-dashboard';
+        var JSON_URL = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO + '/main/data/trading_stats_GBPUSD.json';
+        var REFRESH_INTERVAL = 60000;
+
+        function openPayPal() {
+            window.open('https://www.paypal.com/ncp/payment/LP32TQU8FLLWW', '_blank');
+        }
+
+        function formatNum(num, dec) {
+            dec = dec || 2;
+            return parseFloat(num).toFixed(dec);
+        }
+
+        function getColor(val) {
+            val = parseFloat(val);
+            if (val > 0) return 'positive';
+            if (val < 0) return 'negative';
+            return '';
+        }
+
+        function loadData() {
+            fetch(JSON_URL + '?t=' + Date.now())
+                .then(function(r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
+                .then(function(d) {
+                    if (d.error) throw new Error(d.error);
+                    render(d);
+                })
+                .catch(function(e) {
+                    console.error('Errore:', e);
+                    document.getElementById('content').innerHTML = '<div class="error-box"><div style="font-size:48px;margin-bottom:12px">❌</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Errore di connessione</div><div style="font-size:12px;opacity:0.7">Riprovo tra 60 secondi...</div></div>';
+                });
+        }
+
+        function render(d) {
+            var h = '';
+            h += '<div class="stats-section"><div class="section-title">💼 Account Info</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Symbol</div><div class="stat-value">'+d.symbol+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Magic Number</div><div class="stat-value">'+d.magicNumber+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Balance</div><div class="stat-value">$'+formatNum(d.accountBalance)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Equity</div><div class="stat-value '+getColor(parseFloat(d.accountEquity)-parseFloat(d.accountBalance))+'">$'+formatNum(d.accountEquity)+'</div></div>';
+            h += '</div></div>';
+
+            h += '<div class="stats-section"><div class="section-title">📈 Performance</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Net Profit</div><div class="stat-value '+getColor(d.netProfit)+'">$'+formatNum(d.netProfit)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Total Profit</div><div class="stat-value positive">$'+formatNum(d.totalProfit)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Total Loss</div><div class="stat-value negative">$'+formatNum(d.totalLoss)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Profit Factor</div><div class="stat-value '+(parseFloat(d.profitFactor)>=1.5?'positive':'')+'">'+formatNum(d.profitFactor)+'</div></div>';
+            h += '</div></div>';
+
+            h += '<div class="stats-section"><div class="section-title">🎯 Trading Stats</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Total Trades</div><div class="stat-value">'+d.totalTrades+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Win Rate</div><div class="stat-value '+(parseFloat(d.winRate)>=60?'positive':'')+'">'+formatNum(d.winRate,1)+'%</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Winning Trades</div><div class="stat-value positive">'+d.winningTrades+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Losing Trades</div><div class="stat-value negative">'+d.losingTrades+'</div></div>';
+            h += '</div></div>';
+
+            h += '<div class="stats-section"><div class="section-title">📊 Average Stats</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Average Win</div><div class="stat-value positive">$'+formatNum(d.averageWin)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Average Loss</div><div class="stat-value negative">$'+formatNum(d.averageLoss)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Largest Win</div><div class="stat-value positive">$'+formatNum(d.largestWin)+'</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Largest Loss</div><div class="stat-value negative">$'+formatNum(d.largestLoss)+'</div></div>';
+            h += '</div></div>';
+
+            document.getElementById('content').innerHTML = h;
+            document.getElementById('lastUpdate').textContent = 'Aggiornato: '+d.lastUpdate;
+        }
+
+        loadData();
+        setInterval(loadData, REFRESH_INTERVAL);
+    </script>
+</body>
+</html>
