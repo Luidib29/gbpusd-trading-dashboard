@@ -1,0 +1,19 @@
+{
+  "symbol": "GBPUSD",
+  "magicNumber": 77778,
+  "totalTrades": 0,
+  "winningTrades": 0,
+  "losingTrades": 0,
+  "winRate": 0,
+  "totalProfit": 0,
+  "totalLoss": 0,
+  "netProfit": 0,
+  "profitFactor": 0,
+  "averageWin": 0,
+  "averageLoss": 0,
+  "largestWin": 0,
+  "largestLoss": 0,
+  "accountBalance": 0,
+  "accountEquity": 0,
+  "lastUpdate": "In attesa di dati dall'EA..."
+}
