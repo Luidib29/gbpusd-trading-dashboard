@@ -257,13 +257,75 @@
 
         .session-badge {
             display: inline-block;
-            background: rgba(65, 105, 225, 0.15);
-            border: 1px solid #4169E1;
-            color: #4169E1;
             padding: 6px 14px;
             border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
+        }
+
+        .session-badge.active {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .session-badge.inactive {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .bias-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .bias-badge.bullish {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .bias-badge.bearish {
+            background: rgba(255, 68, 68, 0.15);
+            border: 1px solid #ff4444;
+            color: #ff4444;
+        }
+
+        .bias-badge.neutral {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .bias-reasons {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+        }
+
+        .signal-box {
+            background: rgba(65, 105, 225, 0.1);
+            border: 1px solid rgba(65, 105, 225, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .signal-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4169E1;
+            margin-bottom: 8px;
+        }
+
+        .signal-detail {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
         }
 
         .trade-item {
@@ -372,7 +434,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>💷 FRX-GBP Dashboard</h1>
+            <h1>FRX-GBP Dashboard</h1>
             <div class="subtitle">Real-Time ICT Silver Bullet Strategy - GBPUSD</div>
             <div class="last-update">
                 <span class="live-indicator"></span>
@@ -382,31 +444,28 @@
 
         <div class="nav-tabs">
             <a href="https://luidib29.github.io/ict-trading-bot/" class="nav-tab">
-                📊 XAUUSD Trading
+                XAUUSD Trading
             </a>
             <a href="#" class="nav-tab active">
-                💷 GBPUSD Trading
+                GBPUSD Trading
             </a>
         </div>
 
         <div class="premium-box">
             <div class="premium-content">
-                <h2>⭐ Accedi ai Segnali Premium GBPUSD</h2>
+                <h2>Accedi ai Segnali Premium GBPUSD</h2>
                 <p>Ricevi segnali di trading in tempo reale su GBPUSD basati sulla strategia ICT Silver Bullet con notifiche istantanee su Telegram!</p>
                 
                 <div class="premium-features">
-                    <div class="premium-feature">✅ Segnali GBPUSD real-time</div>
-                    <div class="premium-feature">📊 Analisi ICT dettagliate</div>
-                    <div class="premium-feature">🎯 Entry, SL e TP precisi</div>
-                    <div class="premium-feature">📱 Notifiche Telegram</div>
+                    <div class="premium-feature">Segnali GBPUSD real-time</div>
+                    <div class="premium-feature">Analisi ICT dettagliate</div>
+                    <div class="premium-feature">Entry, SL e TP precisi</div>
+                    <div class="premium-feature">Notifiche Telegram</div>
                 </div>
 
                 <div class="paypal-section">
-                    <span class="price-tag">€29.90/mese</span>
+                    <span class="price-tag">29.90/mese</span>
                     <button class="paypal-button" onclick="openPayPal()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.028.15a.804.804 0 01-.793.679H8.025c-.356 0-.623-.307-.552-.657l2.133-13.517a.963.963 0 01.95-.813h2.877c1.903 0 3.2.398 3.984 1.218.413.431.706.94.893 1.509.096.291.16.6.191.922.03.318.028.649-.006.995z"/>
-                        </svg>
                         Sottoscrivi con PayPal
                     </button>
                 </div>
@@ -420,10 +479,8 @@
     </div>
 
     <script>
-        var GITHUB_USER = 'Luidib29';
-        var REPO = 'gbpusd-trading-dashboard';
-        var JSON_URL = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO + '/main/data/trading_stats_GBPUSD.json';
-        var REFRESH_INTERVAL = 60000;
+        var API_URL = 'https://sunshine-graduates-treo-numeric.trycloudflare.com/api/dashboard';
+        var REFRESH_INTERVAL = 5000;
 
         function openPayPal() {
             window.open('https://www.paypal.com/ncp/payment/LP32TQU8FLLWW', '_blank');
@@ -431,7 +488,7 @@
 
         function formatNum(num, dec) {
             dec = dec || 2;
-            return parseFloat(num).toFixed(dec);
+            return parseFloat(num || 0).toFixed(dec);
         }
 
         function getColor(val) {
@@ -441,8 +498,14 @@
             return '';
         }
 
+        function getBiasClass(bias) {
+            if (bias === 'BULLISH') return 'bullish';
+            if (bias === 'BEARISH') return 'bearish';
+            return 'neutral';
+        }
+
         function loadData() {
-            fetch(JSON_URL + '?t=' + Date.now())
+            fetch(API_URL + '?t=' + Date.now())
                 .then(function(r) {
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     return r.json();
@@ -453,42 +516,101 @@
                 })
                 .catch(function(e) {
                     console.error('Errore:', e);
-                    document.getElementById('content').innerHTML = '<div class="error-box"><div style="font-size:48px;margin-bottom:12px">❌</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Errore di connessione</div><div style="font-size:12px;opacity:0.7">Riprovo tra 60 secondi...</div></div>';
+                    document.getElementById('content').innerHTML = '<div class="error-box"><div style="font-size:48px;margin-bottom:12px">X</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">Errore di connessione</div><div style="font-size:12px;opacity:0.7">Riprovo tra 5 secondi...</div></div>';
                 });
         }
 
         function render(d) {
             var h = '';
-            h += '<div class="stats-section"><div class="section-title">💼 Account Info</div><div class="stats-row">';
-            h += '<div class="stat-box"><div class="stat-label">Symbol</div><div class="stat-value">'+d.symbol+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Magic Number</div><div class="stat-value">'+d.magicNumber+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Balance</div><div class="stat-value">$'+formatNum(d.accountBalance)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Equity</div><div class="stat-value '+getColor(parseFloat(d.accountEquity)-parseFloat(d.accountBalance))+'">$'+formatNum(d.accountEquity)+'</div></div>';
+
+            // Account Info
+            h += '<div class="stats-section"><div class="section-title">Account Info</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Symbol</div><div class="stat-value">' + (d.symbol || 'GBPUSD') + '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Account</div><div class="stat-value">' + (d.account || 'N/A') + '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Balance</div><div class="stat-value">$' + formatNum(d.balance) + '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Equity</div><div class="stat-value ' + getColor(parseFloat(d.equity) - parseFloat(d.balance)) + '">$' + formatNum(d.equity) + '</div></div>';
             h += '</div></div>';
 
-            h += '<div class="stats-section"><div class="section-title">📈 Performance</div><div class="stats-row">';
-            h += '<div class="stat-box"><div class="stat-label">Net Profit</div><div class="stat-value '+getColor(d.netProfit)+'">$'+formatNum(d.netProfit)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Total Profit</div><div class="stat-value positive">$'+formatNum(d.totalProfit)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Total Loss</div><div class="stat-value negative">$'+formatNum(d.totalLoss)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Profit Factor</div><div class="stat-value '+(parseFloat(d.profitFactor)>=1.5?'positive':'')+'">'+formatNum(d.profitFactor)+'</div></div>';
+            // Session & Bias
+            var sessionActive = d.session && d.session !== 'None';
+            var sessionClass = sessionActive ? 'active' : 'inactive';
+            var sessionText = sessionActive ? d.session : 'Nessuna';
+
+            h += '<div class="stats-section"><div class="section-title">ICT Silver Bullet Status</div>';
+            h += '<div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Sessione Attiva</div><div class="stat-value"><span class="session-badge ' + sessionClass + '">' + sessionText + '</span></div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Bias H1</div><div class="stat-value"><span class="bias-badge ' + getBiasClass(d.bias) + '">' + (d.bias || 'NEUTRAL') + '</span>';
+            
+            // Bias reasons
+            if (d.bias_reasons && d.bias_reasons.length > 0) {
+                var reasons = d.bias_reasons.filter(function(r) { return r && r.length > 0; });
+                if (reasons.length > 0) {
+                    h += '<div class="bias-reasons">' + reasons.join(' | ') + '</div>';
+                }
+            }
+            h += '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Spread</div><div class="stat-value">' + formatNum(d.spread_pips, 1) + ' pips</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">P/L Giorno</div><div class="stat-value ' + getColor(d.today_profit) + '">$' + formatNum(d.today_profit) + '</div></div>';
+            h += '</div>';
+
+            // Last Signal
+            var sig = d.last_signal;
+            if (sig && sig.status && sig.status !== 'NONE') {
+                h += '<div class="signal-box">';
+                h += '<div class="signal-title">Ultimo Segnale Silver Bullet</div>';
+                h += '<div class="signal-detail">';
+                h += 'Sessione: ' + (sig.session || 'N/A') + '<br>';
+                h += 'Tipo: ' + (sig.type || 'N/A') + '<br>';
+                h += 'Entry: ' + sig.entry + ' | SL: ' + sig.sl + ' | TP: ' + sig.tp + '<br>';
+                h += 'FVG: ' + sig.fvg_bottom + ' - ' + sig.fvg_top + '<br>';
+                h += 'Sweep: ' + sig.sweep_level + '<br>';
+                h += 'Stato: <strong>' + sig.status + '</strong>';
+                h += '</div></div>';
+            }
+
+            h += '</div>';
+
+            // Trading Stats
+            h += '<div class="stats-section"><div class="section-title">Trading Stats</div><div class="stats-row">';
+            h += '<div class="stat-box"><div class="stat-label">Trade Oggi</div><div class="stat-value">' + (d.total_trades || '0') + '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Win Rate</div><div class="stat-value ' + (parseFloat(d.win_rate) >= 50 ? 'positive' : '') + '">' + formatNum(d.win_rate, 1) + '%</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Trades Vinti</div><div class="stat-value positive">' + (d.win_trades || '0') + '</div></div>';
+            h += '<div class="stat-box"><div class="stat-label">Trades Persi</div><div class="stat-value negative">' + (d.loss_trades || '0') + '</div></div>';
             h += '</div></div>';
 
-            h += '<div class="stats-section"><div class="section-title">🎯 Trading Stats</div><div class="stats-row">';
-            h += '<div class="stat-box"><div class="stat-label">Total Trades</div><div class="stat-value">'+d.totalTrades+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Win Rate</div><div class="stat-value '+(parseFloat(d.winRate)>=60?'positive':'')+'">'+formatNum(d.winRate,1)+'%</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Winning Trades</div><div class="stat-value positive">'+d.winningTrades+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Losing Trades</div><div class="stat-value negative">'+d.losingTrades+'</div></div>';
-            h += '</div></div>';
+            // Open Trades
+            h += '<div class="stats-section"><div class="section-title">Trade Aperti (' + (d.open_trades || '0') + ')</div>';
+            var trades = d.trades || [];
+            if (trades.length > 0) {
+                for (var i = 0; i < trades.length; i++) {
+                    var t = trades[i];
+                    var isBuy = t.type === 'BUY';
+                    var typeClass = isBuy ? 'buy' : 'sell';
+                    var pnl = parseFloat(t.profit || 0);
+                    h += '<div class="trade-item ' + typeClass + '">';
+                    h += '<div class="trade-header">';
+                    h += '<span class="trade-type ' + typeClass + '">' + t.type + ' GBPUSD</span>';
+                    h += '<span class="trade-profit ' + getColor(pnl) + '">$' + formatNum(pnl) + '</span>';
+                    h += '</div>';
+                    h += '<div class="trade-details">';
+                    h += 'Entry: ' + t.entry + ' | SL: ' + t.sl + ' | TP: ' + t.tp;
+                    h += '</div></div>';
+                }
+            } else {
+                h += '<div class="no-trades">Nessun trade aperto</div>';
+            }
+            h += '</div>';
 
-            h += '<div class="stats-section"><div class="section-title">📊 Average Stats</div><div class="stats-row">';
-            h += '<div class="stat-box"><div class="stat-label">Average Win</div><div class="stat-value positive">$'+formatNum(d.averageWin)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Average Loss</div><div class="stat-value negative">$'+formatNum(d.averageLoss)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Largest Win</div><div class="stat-value positive">$'+formatNum(d.largestWin)+'</div></div>';
-            h += '<div class="stat-box"><div class="stat-label">Largest Loss</div><div class="stat-value negative">$'+formatNum(d.largestLoss)+'</div></div>';
-            h += '</div></div>';
+            // Floating P/L
+            if (trades.length > 0) {
+                h += '<div class="stats-section"><div class="stats-row">';
+                h += '<div class="stat-box"><div class="stat-label">Floating P/L</div><div class="stat-value ' + getColor(d.floating_pl) + '">$' + formatNum(d.floating_pl) + '</div></div>';
+                h += '<div class="stat-box"><div class="stat-label">Open Trades</div><div class="stat-value">' + (d.open_trades || '0') + '</div></div>';
+                h += '</div></div>';
+            }
 
             document.getElementById('content').innerHTML = h;
-            document.getElementById('lastUpdate').textContent = 'Aggiornato: '+d.lastUpdate;
+            document.getElementById('lastUpdate').textContent = 'Aggiornato: ' + (d.last_update || new Date().toLocaleString('it-IT'));
         }
 
         loadData();
